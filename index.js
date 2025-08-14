@@ -274,7 +274,10 @@ client.on("messageCreate", async (msg) => {
     scheduleWindowNotifications(updated);
   }
 });
-
+console.log("TOKEN length:", process.env.TOKEN?.length);
+client.on("debug", (m) => console.log("[DEBUG]", m));
+client.on("error", (e) => console.error("[ERROR]", e));
+client.on("shardError", (e) => console.error("[SHARD ERROR]", e));
 // ---------- Boot ----------
 (async () => {
   try {
