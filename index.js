@@ -211,6 +211,7 @@ function buildTimersEmbed(bosses) {
 }
 
 // ---------- Bot ----------
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -219,7 +220,7 @@ const client = new Client({
   ],
   partials: [Partials.Channel],
 });
-
+console.log(client);
 client.once("ready", async () => {
   console.log(`✅ Logueado como ${client.user.tag}`);
   // Programar timers para todos los bosses que tengan last_kill
@@ -276,6 +277,12 @@ client.on("messageCreate", async (msg) => {
 
 // ---------- Boot ----------
 (async () => {
-  await initDB();
-  await client.login(process.env.TOKEN);
+  try {
+    await initDB();
+    console.log("DB conectada");
+    await client.login(process.env.TOKEN);
+    console.log("Bot logueado");
+  } catch (err) {
+    console.error("Error en arranque:", err);
+  }
 })();
