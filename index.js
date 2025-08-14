@@ -220,13 +220,6 @@ const client = new Client({
   ],
   partials: [Partials.Channel],
 });
-console.log(client);
-client.once("ready", async () => {
-  console.log(`✅ Logueado como ${client.user.tag}`);
-  // Programar timers para todos los bosses que tengan last_kill
-  const bosses = await getAllBosses();
-  bosses.forEach(scheduleWindowNotifications);
-});
 
 client.on("messageCreate", async (msg) => {
   if (msg.author.bot) return;
@@ -274,10 +267,16 @@ client.on("messageCreate", async (msg) => {
     scheduleWindowNotifications(updated);
   }
 });
-console.log("TOKEN length:", process.env.TOKEN?.length);
 client.on("debug", (m) => console.log("[DEBUG]", m));
+client.on("warn", (m) => console.warn("[WARN]", m));
 client.on("error", (e) => console.error("[ERROR]", e));
 client.on("shardError", (e) => console.error("[SHARD ERROR]", e));
+
+client.once("ready", async () => {
+  console.log(`✅ Bot listo como ${client.user.tag}`);
+  const bosses = await getAllBosses();
+  bosses.forEach(scheduleWindowNotifications);
+});
 // ---------- Boot ----------
 (async () => {
   try {
